@@ -1,0 +1,12 @@
+<phpunit colors="true"
+         bootstrap="vendor/photon/photon/src/photon/testbootstrap.php"
+>
+    <testsuites>
+        <testsuite name="Micro ORM for MongoDB Tests">
+             <directory>vendor/photon/storage-mongodb-object/tests/</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="photon.config" value="vendor/photon/storage-mongodb-object/config.test.php"/>
+    </php>
+</phpunit>

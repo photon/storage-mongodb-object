@@ -1,0 +1,34 @@
+{
+    "name": "photon/storage-mongodb-object",
+    "type": "library",
+    "description": "Micro ORM for MongoDB",
+    "keywords": [
+        "photon",
+        "storage",
+        "mongodb",
+        "orm"
+    ],
+    "homepage": "http://www.photon-project.com/",
+    "license": "LGPL-2.1",
+    "authors": [
+        {
+            "name": "William MARTIN",
+            "email": "william.martin@power-lan.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Community",
+            "homepage": "https://github.com/photon/storage-mongodb-object/blob/master/CONTRIBUTORS.md"
+        }
+    ],
+    "require": {
+        "photon/photon": ">=1.0.0",
+        "photon/utils-mongodb": ">=1.0.0",
+        "ext-mongo": ">=1.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "photon\\storage\\mongodb\\": "src/"
+        }
+    }
+}
