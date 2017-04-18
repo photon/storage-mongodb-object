@@ -22,9 +22,10 @@
         }
     ],
     "require": {
-        "photon/photon": ">=1.0.0",
-        "photon/utils-mongodb": ">=1.0.0",
-        "ext-mongo": ">=1.0.0"
+        "php" : "^5.5 || ^7.0",
+        "mongodb/mongodb": "~1.1",
+        "photon/photon": "~2.0",
+        "photon/utils-mongodb": "~2.0"
     },
     "autoload": {
         "psr-4": {
