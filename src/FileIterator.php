@@ -4,27 +4,58 @@ namespace photon\storage\mongodb;
 use \photon\db\Connection as DB;
 use \photon\config\Container as Conf;
 
+class FileEntry extends \MongoDB\Model\BSONDocument
+{
+    public $_gridfs;
+
+    public function __construct(\MongoDB\Model\BSONDocument $doc)
+    {
+        parent::__construct($doc);
+    }
+
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+    public function getLength()
+    {
+        return $this->length;
+    }
+
+    public function getBytes()
+    {
+        $stream = $this->_gridfs->openDownloadStream($this->_id);
+        return stream_get_contents($stream);
+    }
+}
+
 /*
  *  Create an iterator on file stored in GridFS
  */
-class FileIterator extends \MongoGridFSCursor
+class FileIterator extends \IteratorIterator
 {
+    public $_gridfs;
+
     public function __construct($gridFsName, $filter=array())
     {
         $databases = Conf::f('databases', array());
         $config = Conf::f('storage-mongodb-object', array());
         $dbName = isset($config['databases']) ? $config['databases'] : 'default';
-        if (!isset($databases[$dbName])) {
-            throw new \photon\db\UndefinedConnection(sprintf('The connection "%s" is not defined in the configuration.', $dbName));
-        }
-        
-        $class = class_exists('\MongoClient') ? '\MongoClient' : '\Mongo';
-        $conn = new $class($databases[$dbName]['server'], $databases[$dbName]['options']);
-        $db = $conn->selectDB($databases[$dbName]['database']);
-        $gridfs = $db->getGridFS($gridFsName);
-        $ns = $databases[$dbName]['database'] . '.' . $gridFsName . '.files';
 
-        $fields = array();
-        parent::__construct($gridfs, $conn, $ns, $filter, $fields);
+        $db = DB::get($dbName);
+        $this->_gridfs = new \MongoDB\GridFS\Bucket($db->getManager(), $gridFsName);
+        $it = $this->_gridfs->find($filter);
+        
+        parent::__construct($it);
+        $this->rewind();        
+    }
+
+    public function current()
+    {
+        $current = new FileEntry(parent::current());
+        $current->_gridfs = $this->_gridfs;
+
+        return $current;
     }
 }
