@@ -5,6 +5,13 @@ storage-mongodb-object
 
 Micro ORM for MongoDB
 
+PHP Versions
+------------
+
+- 5.6, 7.0 and 7.1 are supported and tested under travis
+- Use ext-mongodb and mongodb/mongodb. Do not works anymore with legacy ext-mongo
+
+
 Quick start
 -----------
 
@@ -14,7 +21,7 @@ Quick start
 
 or for a specific version
 
-    composer require "photon/storage-mongodb-object:1.0.0"
+    composer require "photon/storage-mongodb-object:2.0.0"
 
 2) Define a MongoDB connection in your project configuration
 
@@ -31,5 +38,22 @@ or for a specific version
 
 3) Create custom object in PHP
 
-4) Enjoy !
+    class User extends \photon\storage\mongodb\Object
+    {
+        const collectionName = 'users';
+
+        public function initObject()
+        {
+            $this->ctm = new DateTime;
+            $this->activated = false;
+        }
+    }
+
+4) Use your object
+
+    $user = new User;
+    $user->name = 'Foo';
+    $user->save();
+
+5) Enjoy !
 
