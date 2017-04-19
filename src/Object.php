@@ -69,10 +69,10 @@ class Object implements \ArrayAccess
         // Extends this methods to initialize a empty object of your
     }
 
-    protected static function newId($id=null)
+    protected static function newId()
     {
         // Extends this methods to use your id generator instead of MongoId
-        return $id;
+        return new \MongoDB\BSON\ObjectID;
     }
 
     protected function postCreate()
@@ -184,11 +184,12 @@ class Object implements \ArrayAccess
             // Create
             if (isset($this->__data['_id']) === false) {
                 $id = $this::newId();
-                if($id !== null) {
+                if ($id !== null) {
                     $this->__data['_id'] = $id;
                 }
             }
-            $r = $this->__collection->insert($this->__data);
+
+            $r = $this->__collection->insertOne($this->__data);
             $this->__filter = array('_id' => $this->__data['_id']);
 
             // Object hook
@@ -196,7 +197,7 @@ class Object implements \ArrayAccess
         } else {
             // Update
             if (isset($this->__pending['$set']) || isset($this->__pending['$unset'])) {
-                $this->__collection->update(
+                $this->__collection->updateOne(
                     array('_id' => $this->__data['_id']),
                     $this->__pending
                 );
@@ -217,7 +218,7 @@ class Object implements \ArrayAccess
 
         $this->preDelete();
         
-        $this->__collection->remove(
+        $this->__collection->deleteOne(
             array('_id' => $this->__data['_id'])
         );
 

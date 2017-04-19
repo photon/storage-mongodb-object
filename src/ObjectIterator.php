@@ -8,12 +8,13 @@ use \photon\config\Container as Conf;
  *  Create an iterator on an Model
  *  Returned entry by the iterator is build with the model engine
  */
-class ObjectIterator extends \MongoCursor
+class ObjectIterator extends \IteratorIterator
 {
     private $objectType = null;
     private $collectionName = null;
+    private $it = null;
     
-    public function __construct($objectType, $filter=array(), $collectionName=null)
+    public function __construct($objectType, $filter=array(), $options=array(), $collectionName=null)
     {
         $this->objectType = $objectType;$objectType;
         if ($collectionName === null) {
@@ -25,15 +26,13 @@ class ObjectIterator extends \MongoCursor
         $databases = Conf::f('databases', array());
         $config = Conf::f('storage-mongodb-object', array());
         $dbName = isset($config['databases']) ? $config['databases'] : 'default';
-        if (!isset($databases[$dbName])) {
-            throw new \photon\db\UndefinedConnection(sprintf('The connection "%s" is not defined in the configuration.', $db));
-        }
+
+        $db = DB::get($dbName);
+        $collection = $db->selectCollection($collectionName);
+        $this->it = $collection->find($filter, $options);
         
-        $class = class_exists('\MongoClient') ? '\MongoClient' : '\Mongo';
-        $conn = new $class($databases[$dbName]['server'], $databases[$dbName]['options']);
-        $ns = $databases[$dbName]['database'] . '.' . $collectionName;
-        $fields = array('_id' => 1);
-        parent::__construct($conn, $ns, $filter, $fields);
+        parent::__construct($this->it);
+        $this->rewind();
     }
     
     public function current()

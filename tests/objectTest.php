@@ -1,5 +1,6 @@
 <?php
 
+use photon\db\Connection as DB;
 use photon\storage\mongodb\Object;
 use photon\storage\mongodb\ObjectIterator;
 
@@ -16,6 +17,12 @@ class User extends Object
 
 class ObjectTest extends \photon\test\TestCase
 {
+    public function setup()
+    {
+        parent::setup();
+        DB::get('default')->users->drop();
+    }
+
     public function testSimpleObject()
     {
         $user = new User;
@@ -40,8 +47,11 @@ class ObjectTest extends \photon\test\TestCase
         $user->name = 'C';
         $user->save();
 
-        $it = new ObjectIterator('User');
-        $it->sort(array('ctm' => 1));
+        $filter = array();
+        $options = array(
+            'sort' => array('ctm' => 1)
+        );
+        $it = new ObjectIterator('User', $filter, $options);
         $i = 0;
         foreach($it as $user) {
             $this->assertEquals('User', get_class($user));

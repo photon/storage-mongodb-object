@@ -5,11 +5,19 @@ use photon\storage\mongodb\FileIterator;
 
 class FileIteratorTest extends \photon\test\TestCase
 {
+    public function setup()
+    {
+        parent::setup();
+
+        $db = DB::get('default');
+        $gridfs = new \MongoDB\GridFS\Bucket($db->getManager(), 'gridfsname');
+        $gridfs->drop();
+    }
+
     public function testIteratorFile()
     {
         $db = DB::get('default');
         $gridfs = new \MongoDB\GridFS\Bucket($db->getManager(), 'gridfsname');
-        $gridfs->drop();
 
         $data = array(
             'memo_a.txt' => 'bin data very important',

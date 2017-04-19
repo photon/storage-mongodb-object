@@ -47,6 +47,14 @@ class ObjC extends Object
 
 class MigrationTest extends \photon\test\TestCase
 {
+    public function setup()
+    {
+        parent::setup();
+
+        $versions = new ObjectVersion;
+        $versions->resetAll();
+    }
+
     public function testMigrationInitAndCheck()
     {
         // First time the App run, the object ObjA go in version 1
