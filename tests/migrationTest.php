@@ -55,6 +55,13 @@ class MigrationTest extends \photon\test\TestCase
         $versions->resetAll();
     }
 
+
+    public function testMigrationScanNs()
+    {
+        $migration = new Migration;
+        $migration->scanNamespaceForObject("\\");
+    }
+
     public function testMigrationInitAndCheck()
     {
         // First time the App run, the object ObjA go in version 1

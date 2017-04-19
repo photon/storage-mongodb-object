@@ -17,7 +17,7 @@ class Migration
     public function scanNamespaceForObject($ns)
     {
         $classes = get_declared_classes();
-        $classes = array_filter($classes, function ($value) {
+        $classes = array_filter($classes, function ($value) use ($ns) {
             if (substr($value, 0, strlen($ns)) !== $ns) {
                 return false;
             }
