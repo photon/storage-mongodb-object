@@ -20,9 +20,9 @@ class Object implements \ArrayAccess
      */
     protected $mandatoryFields = array();
     
-    protected $__filter = array();
-    protected $__collection = null;
-    protected $__data = array();
+    protected $__filter;
+    protected $__collection;
+    protected $__data;
     protected $__pending;
 
     /*
@@ -37,6 +37,8 @@ class Object implements \ArrayAccess
 
         $this->__collection = $db->selectCollection($this->getCollectionName());
         $this->__filter = $filter;
+        $this->__data = array();
+        $this->__pending = array();
 
         if ($filter === null) {
             $this->initObject();
