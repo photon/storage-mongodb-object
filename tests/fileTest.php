@@ -38,6 +38,9 @@ class FileIteratorTest extends \photon\test\TestCase
 
             $this->assertEquals($content, $data[$filename]);
             $i++;
+
+            $file->rename('willbedelete.txt');
+            $file->delete();
         }
 
         $this->assertEquals($i, 3);

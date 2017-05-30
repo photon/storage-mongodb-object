@@ -28,6 +28,16 @@ class FileEntry extends \MongoDB\Model\BSONDocument
         $stream = $this->_gridfs->openDownloadStream($this->_id);
         return stream_get_contents($stream);
     }
+
+    public function rename($newFilename)
+    {
+        $this->_gridfs->rename($this->_id, $newFilename);
+    }
+
+    public function delete()
+    {
+        $this->_gridfs->delete($this->_id);
+    }
 }
 
 /*
