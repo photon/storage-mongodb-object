@@ -16,7 +16,7 @@ class ObjectIterator extends \IteratorIterator
     
     public function __construct($objectType, $filter=array(), $options=array(), $collectionName=null)
     {
-        $this->objectType = $objectType;$objectType;
+        $this->objectType = $objectType;
         if ($collectionName === null) {
             $collectionName = $objectType::collectionName;
         } else {
