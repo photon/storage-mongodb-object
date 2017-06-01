@@ -57,7 +57,7 @@ class FileEntry extends \MongoDB\Model\BSONDocument
         $collection = $this->_db->selectCollection($this->_collectionFiles);
         $collection->findOneAndUpdate(
             array('_id' => $this->_id),
-            $metadata,
+            array('$update' => $metadata),
             array('upsert' => false)
         );
     }
