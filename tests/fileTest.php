@@ -39,6 +39,8 @@ class FileIteratorTest extends \photon\test\TestCase
             $this->assertEquals($content, $data[$filename]);
             $i++;
 
+            $file->getMd5();
+            $file->getUploadDate();
             $file->rename('willbedelete.txt');
             $file->delete();
         }

@@ -23,6 +23,16 @@ class FileEntry extends \MongoDB\Model\BSONDocument
         return $this->length;
     }
 
+    public function getMd5()
+    {
+        return $this->md5;
+    }
+
+    public function getUploadDate()
+    {
+        return $this->uploadDate;
+    }
+
     public function getBytes()
     {
         $stream = $this->_gridfs->openDownloadStream($this->_id);
