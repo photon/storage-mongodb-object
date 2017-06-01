@@ -42,6 +42,14 @@ class FileIteratorTest extends \photon\test\TestCase
             $file->getMd5();
             $file->getUploadDate();
             $file->rename('willbedelete.txt');
+
+
+            $metadata = array(
+                'duplicate' => true,
+                'ignore' => false,
+            );
+            $file->updateMetadata($metadata);
+
             $file->delete();
         }
 

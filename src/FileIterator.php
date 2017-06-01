@@ -6,7 +6,10 @@ use \photon\config\Container as Conf;
 
 class FileEntry extends \MongoDB\Model\BSONDocument
 {
+    public $_db;
     public $_gridfs;
+    public $_collectionFiles;
+    public $_collectionChunks;
 
     public function __construct(\MongoDB\Model\BSONDocument $doc)
     {
@@ -48,6 +51,16 @@ class FileEntry extends \MongoDB\Model\BSONDocument
     {
         $this->_gridfs->delete($this->_id);
     }
+
+    public function updateMetadata($metadata)
+    {
+        $collection = $this->_db->selectCollection($this->_collectionFiles);
+        $collection->findOneAndUpdate(
+            array('_id' => $this->_id),
+            $metadata,
+            array('upsert' => false)
+        );
+    }
 }
 
 /*
@@ -55,16 +68,19 @@ class FileEntry extends \MongoDB\Model\BSONDocument
  */
 class FileIterator extends \IteratorIterator
 {
+    public $_db;
     public $_gridfs;
+    public $_gridfsname;
 
-    public function __construct($gridFsName, $filter=array())
+    public function __construct($gridfsname, $filter=array())
     {
         $databases = Conf::f('databases', array());
         $config = Conf::f('storage-mongodb-object', array());
         $dbName = isset($config['databases']) ? $config['databases'] : 'default';
 
-        $db = DB::get($dbName);
-        $this->_gridfs = new \MongoDB\GridFS\Bucket($db->getManager(), $gridFsName);
+        $this->_gridfsname = $gridfsname;
+        $this->_db = DB::get($dbName);
+        $this->_gridfs = new \MongoDB\GridFS\Bucket($this->_db->getManager(), $gridfsname);
         $it = $this->_gridfs->find($filter);
         
         parent::__construct($it);
@@ -74,7 +90,10 @@ class FileIterator extends \IteratorIterator
     public function current()
     {
         $current = new FileEntry(parent::current());
+        $current->_db = $this->_db;
         $current->_gridfs = $this->_gridfs;
+        $current->_collectionFiles = $this->_gridfsname . '.files';
+        $current->_collectionChunks = $this->_gridfsname . '.chunks';
 
         return $current;
     }
