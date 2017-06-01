@@ -16,6 +16,11 @@ class FileEntry extends \MongoDB\Model\BSONDocument
         parent::__construct($doc);
     }
 
+    public function getId()
+    {
+        return $this->_id;
+    }
+
     public function getFilename()
     {
         return $this->filename;
