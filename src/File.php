@@ -11,12 +11,9 @@ class File extends Object
      */
     const collectionName = 'fs';
 
-    public $_gridfs;
-
     public function __construct($filter=null)
     {
         parent::__construct($filter);
-        $this->__gridfs = $this->__db->selectGridFSBucket(array('bucketName' => static::collectionName));
     }
 
     static public function getCollectionName()
@@ -55,7 +52,8 @@ class File extends Object
             throw new Exception('Can not open download stream on not initialized file');
         }
 
-        return $this->__gridfs->openDownloadStream($this->_id);
+        $gridfs = $this->__db->selectGridFSBucket(array('bucketName' => static::collectionName));
+        return $gridfs->openDownloadStream($this->_id);
     }
 
     public function getUploadStream($filename, $metadata=array())
@@ -78,7 +76,8 @@ class File extends Object
             $metadata['contentType'] = 'application/octet-stream';
         }
 
-        return $this->__gridfs->openUploadStream($filename, array('_id' => $id, 'metadata' => $metadata));
+        $gridfs = $this->__db->selectGridFSBucket(array('bucketName' => static::collectionName));
+        return $gridfs->openUploadStream($filename, array('_id' => $id, 'metadata' => $metadata));
     }
 
     public function getBytes()
@@ -100,7 +99,8 @@ class File extends Object
 
         $this->preDelete();
 
-        $this->__gridfs->delete($this->_id);
+        $gridfs = $this->__db->selectGridFSBucket(array('bucketName' => static::collectionName));
+        $gridfs->delete($this->_id);
     }
 
     public static function isEmpty()
