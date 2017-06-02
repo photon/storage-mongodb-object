@@ -14,6 +14,7 @@ services:
   - mongodb
 
 before_script:
+  - mongod --version
   - echo 'extension = "mongodb.so"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - ./scripts/travis
   - composer init --no-interaction --stability=dev
