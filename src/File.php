@@ -63,7 +63,7 @@ class File extends Object
         }
 
         $id = new \MongoDB\BSON\ObjectID;
-        $this->_id = $id;
+        $this->__data['_id'] = $id;
         $this->__filter = array('_id' => $id);
 
         // Append uploadDate if not provided
