@@ -21,6 +21,7 @@ class Object implements \ArrayAccess
     protected $mandatoryFields = array();
     
     protected $__filter;
+    protected $__db;    
     protected $__collection;
     protected $__data;
     protected $__pending;
@@ -35,7 +36,8 @@ class Object implements \ArrayAccess
         $db = isset($config['databases']) ? $config['databases'] : 'default';
         $db = DB::get($db);
 
-        $this->__collection = $db->selectCollection($this->getCollectionName());
+        $this->__db = $db;
+        $this->__collection = $db->selectCollection($this::getCollectionName());
         $this->__filter = $filter;
         $this->__data = array();
         $this->__pending = array();
@@ -61,7 +63,7 @@ class Object implements \ArrayAccess
      *  Return the collection name for this object
      *  Override this method for object with dynamic collection, like data points and vectors
      */
-    protected function getCollectionName()
+    static public function getCollectionName()
     {
         return static::collectionName;
     }    

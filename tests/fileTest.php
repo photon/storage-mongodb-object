@@ -1,7 +1,13 @@
 <?php
 
 use photon\db\Connection as DB;
-use photon\storage\mongodb\FileIterator;
+use photon\storage\mongodb\File;
+use photon\storage\mongodb\ObjectIterator;
+
+class Flac extends File
+{
+    const collectionName = 'flac';
+}
 
 class FileIteratorTest extends \photon\test\TestCase
 {
@@ -10,50 +16,99 @@ class FileIteratorTest extends \photon\test\TestCase
         parent::setup();
 
         $db = DB::get('default');
-        $gridfs = new \MongoDB\GridFS\Bucket($db->getManager(), 'gridfsname');
-        $gridfs->drop();
+        $db->drop();
+    }
+
+    public function testUnknownFile()
+    {
+        $this->setExpectedException('photon\storage\mongodb\Exception');
+        $file = new Flac(array('filename' => 'lol.flac'));
+    }
+
+    public function testCreateAndUpdateFile()
+    {
+        // Create a new file
+        $file = new Flac;
+        $stream = $file->getUploadStream('lol.flac');
+        fwrite($stream, 'LaaaaLaaaLaaaaaa');
+        fclose($stream);
+        $file->bitrate = 123;
+        $file->encoding = 'le';
+        $file->duration = 12458;
+        $file->save();
+
+        // Update metadata
+        $file = new Flac(array('filename' => 'lol.flac'));
+        $file->duration = 1254;
+        $file->save();
+    }
+
+    public function testCreateAndRenameFile()
+    {
+        $file = new Flac;
+        $stream = $file->getUploadStream('b.flac');
+        fwrite($stream, 'TaaaaTaaaDaaaaa');
+        fclose($stream);
+
+        $file->filename = 'lol.flac';
+        $file->save();
+
+        $file = new Flac(array('filename' => 'lol.flac'));
+    }
+
+    public function testMultipleRead()
+    {
+        $content = 'TaaaaTaaaDaaaaa';
+
+        $file = new Flac;
+        $stream = $file->getUploadStream('b.flac');
+        fwrite($stream, $content);
+        fclose($stream);
+
+        $file = new Flac(array('filename' => 'b.flac'));
+        $stream = $file->getDownloadStream();
+        $bin = fread($stream, 1500);
+        $this->assertEquals($content, $bin);
+
+        $stream = $file->getDownloadStream();
+        $bin = fread($stream, 1500);
+        $this->assertEquals($content, $bin);
     }
 
     public function testIteratorFile()
     {
-        $db = DB::get('default');
-        $gridfs = new \MongoDB\GridFS\Bucket($db->getManager(), 'gridfsname');
+        // Create a new file
+        $file = new Flac;
+        $stream = $file->getUploadStream('a.flac');
+        fwrite($stream, 'LaaaaLaaaLaaaaaa');
+        fclose($stream);
+        $file->bitrate = 123;
+        $file->encoding = 'le';
+        $file->duration = 12458;
+        $file->save();
 
-        $data = array(
-            'memo_a.txt' => 'bin data very important',
-            'memo_b.bin' => '12345648913461320564846',
-            'memo_c.csv' => 'a,c,v,f,f,g,bv,fr,r,f,f'
-        );
-        foreach($data as $filename => $content) {
-            $stream = $gridfs->openUploadStream($filename);
-            fwrite($stream, $content);
-            fclose($stream);
-        }
+        // Create a new file
+        $file = new Flac;
+        $stream = $file->getUploadStream('b.flac');
+        fwrite($stream, 'TaaaaTaaaDaaaaa');
+        fclose($stream);
 
-        $i = 0;
-        $it = new FileIterator('gridfsname');
-        foreach ($it as $file) {
-            $filename = $file->getFilename();
-            $content = $file->getBytes();
+        $it = new ObjectIterator('Flac');
+        $nbFileFound = 0;
+        foreach($it as $file) {
+            $this->assertEquals('Flac', get_class($file));
+            $nbFileFound++;
 
-            $this->assertEquals($content, $data[$filename]);
-            $i++;
 
+            $file->getFilename();
             $file->getId();
             $file->getMd5();
             $file->getUploadDate();
+
             $file->rename('willbedelete.txt');
 
-
-            $metadata = array(
-                'duplicate' => true,
-                'ignore' => false,
-            );
-            $file->updateMetadata($metadata);
-
-            $file->delete();
         }
+        $this->assertEquals($nbFileFound, 2);
 
-        $this->assertEquals($i, 3);
     }
 }

@@ -20,7 +20,9 @@ class ObjectTest extends \photon\test\TestCase
     public function setup()
     {
         parent::setup();
-        DB::get('default')->users->drop();
+
+        $db = DB::get('default');
+        $db->drop();
     }
 
     public function testSimpleObject()

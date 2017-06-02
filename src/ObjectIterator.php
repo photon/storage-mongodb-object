@@ -18,7 +18,7 @@ class ObjectIterator extends \IteratorIterator
     {
         $this->objectType = $objectType;
         if ($collectionName === null) {
-            $collectionName = $objectType::collectionName;
+            $collectionName = $objectType::getCollectionName();
         } else {
             $this->collectionName = $collectionName;
         }
@@ -29,6 +29,8 @@ class ObjectIterator extends \IteratorIterator
 
         $db = DB::get($dbName);
         $collection = $db->selectCollection($collectionName);
+
+        $options['projection'] = array('_id' => 1);
         $this->it = $collection->find($filter, $options);
         
         parent::__construct($this->it);
