@@ -248,6 +248,19 @@ class Object implements \ArrayAccess
     }
 
     /*
+     *  Return the number of object that match the filter
+     */
+    static public function count($filter)
+    {
+        $config = Conf::f('storage-mongodb-object', array());
+        $db = isset($config['databases']) ? $config['databases'] : 'default';
+        $db = DB::get($db);
+        $collection = $db->selectCollection(static::getCollectionName());
+
+        return $collection->count($filter);
+    }
+
+    /*
      *  ArrayAccess methods
      */
     public function offsetSet($offset, $value) {
