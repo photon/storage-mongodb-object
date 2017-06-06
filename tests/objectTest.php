@@ -35,6 +35,27 @@ class ObjectTest extends \photon\test\TestCase
         $reload->delete();
     }
 
+    public function testCountObject()
+    {
+        $user = new User;
+        $user->name = 'A';
+        $user->save();
+
+        $user = new User;
+        $user->name = 'B';
+        $user->save();
+
+        $user = new User;
+        $user->name = 'C';
+        $user->save();
+
+        $nb = User::count();
+        $this->assertEquals($nb, 3);
+
+        $nb = User::count(array('name' => 'A'));
+        $this->assertEquals($nb, 1);
+    }
+
     public function testIteratorObject()
     {
         $user = new User;

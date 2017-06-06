@@ -250,7 +250,7 @@ class Object implements \ArrayAccess
     /*
      *  Return the number of object that match the filter
      */
-    static public function count($filter)
+    static public function count($filter=array())
     {
         $config = Conf::f('storage-mongodb-object', array());
         $db = isset($config['databases']) ? $config['databases'] : 'default';
