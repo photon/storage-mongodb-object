@@ -261,6 +261,24 @@ class Object implements \ArrayAccess
     }
 
     /*
+     *  Build a new MongoDB ObjectID
+     *  throw an exception from photon namespace instead of MongoDB
+     */
+    static public function createObjectID($id=null)
+    {
+        if ($id === null) {
+            return new \MongoDB\BSON\ObjectID;
+        }
+
+        try {
+            return new \MongoDB\BSON\ObjectID($id);
+        } catch(\MongoDB\Driver\Exception\InvalidArgumentException $e) {
+        }
+
+        throw new Exception('Invalid ObjectID');
+    }
+
+    /*
      *  ArrayAccess methods
      */
     public function offsetSet($offset, $value) {

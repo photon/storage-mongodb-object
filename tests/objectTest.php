@@ -88,4 +88,17 @@ class ObjectTest extends \photon\test\TestCase
         $this->setExpectedException('photon\storage\mongodb\Exception');
         $user = new User(array('name' => 'Do not exists'));
     }
+
+    public function testObjectID()
+    {
+        $id = Object::createObjectID();
+        $this->assertInternalType('\MongoDB\BSON\ObjectID', $id);
+    }
+
+
+    public function testObjectIDInvalid()
+    {
+        $this->setExpectedException('photon\storage\mongodb\Exception');
+        Object::createObjectID('BAD-FORMAT');
+    }
 }
