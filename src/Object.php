@@ -42,10 +42,18 @@ class Object implements \ArrayAccess
         $this->__data = array();
         $this->__pending = array();
 
+        $options = array(
+            'typeMap' => array(
+                'root' => 'array',
+                'document' => 'array',
+                'array' => 'array',
+            )
+        );
+
         if ($filter === null) {
             $this->initObject();
         } else {
-            $this->__data = $this->__collection->findOne($this->__filter);
+            $this->__data = $this->__collection->findOne($this->__filter, $options);
             if ($this->__data === null) {
                 throw new Exception("Object not found", 404);
             } else {
