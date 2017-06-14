@@ -76,8 +76,10 @@ class File extends Object
             $metadata['contentType'] = 'application/octet-stream';
         }
 
+        $this->setFields($metadata);
+
         $gridfs = $this->__db->selectGridFSBucket(array('bucketName' => static::collectionName));
-        return $gridfs->openUploadStream($filename, array('_id' => $id, 'metadata' => $metadata));
+        return $gridfs->openUploadStream($filename, array('_id' => $id));
     }
 
     public function getBytes()
