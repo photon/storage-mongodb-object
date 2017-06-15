@@ -92,9 +92,8 @@ class ObjectTest extends \photon\test\TestCase
     public function testObjectID()
     {
         $id = Object::createObjectID();
-        $this->assertInternalType('\MongoDB\BSON\ObjectID', $id);
+        $this->assertEquals('MongoDB\BSON\ObjectID', get_class($id));
     }
-
 
     public function testObjectIDInvalid()
     {
