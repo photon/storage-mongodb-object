@@ -39,10 +39,16 @@ class ObjectIterator extends \IteratorIterator
     
     public function current()
     {
+        $current = parent::current();
+
+        if ($current === null) {
+            return null;
+        }
+
         if ($this->collectionName === null) {
-            return new $this->objectType(parent::current());
+            return new $this->objectType($current);
         } else {
-            return new $this->objectType($this->collectionName, parent::current());
+            return new $this->objectType($this->collectionName, $current);
         }
     }
 }
