@@ -62,7 +62,7 @@ class File extends Object
             throw new Exception('Can not open upload stream on a already initialized file');
         }
 
-        $id = new \MongoDB\BSON\ObjectID;
+        $id = new \MongoDB\BSON\ObjectId;
         $this->__data['_id'] = $id;
         $this->__filter = array('_id' => $id);
 

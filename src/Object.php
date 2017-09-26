@@ -84,7 +84,7 @@ class Object implements \ArrayAccess
     protected static function newId()
     {
         // Extends this methods to use your id generator instead of MongoId
-        return new \MongoDB\BSON\ObjectID;
+        return new \MongoDB\BSON\ObjectId;
     }
 
     protected function postCreate()
@@ -297,21 +297,21 @@ class Object implements \ArrayAccess
     }
 
     /*
-     *  Build a new MongoDB ObjectID
+     *  Build a new MongoDB ObjectId
      *  throw an exception from photon namespace instead of MongoDB
      */
     static public function createObjectID($id=null)
     {
         if ($id === null) {
-            return new \MongoDB\BSON\ObjectID;
+            return new \MongoDB\BSON\ObjectId;
         }
 
         try {
-            return new \MongoDB\BSON\ObjectID($id);
+            return new \MongoDB\BSON\ObjectId($id);
         } catch(\MongoDB\Driver\Exception\InvalidArgumentException $e) {
         }
 
-        throw new Exception('Invalid ObjectID');
+        throw new Exception('Invalid ObjectId');
     }
 
     /*
