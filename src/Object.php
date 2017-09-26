@@ -269,6 +269,34 @@ class Object implements \ArrayAccess
     }
 
     /*
+     *  Get the last one object based on the provided sort query
+     */
+    static public function lastOne($sort=null)
+    {
+        if ($sort === null) {
+          $sort = array(
+            'ctm' => -1
+          );
+        }
+
+        $config = Conf::f('storage-mongodb-object', array());
+        $db = isset($config['databases']) ? $config['databases'] : 'default';
+        $db = DB::get($db);
+        $collection = $db->selectCollection(static::getCollectionName());
+
+        $obj = $collection->findOne(array(), array(
+          'projection' => array('_id' => 1),
+          'sort' => $sort,
+        ));
+
+        if ($obj === null) {
+          return null;
+        }
+
+        return new static($obj);
+    }
+
+    /*
      *  Build a new MongoDB ObjectID
      *  throw an exception from photon namespace instead of MongoDB
      */
