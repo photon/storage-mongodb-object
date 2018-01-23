@@ -9,7 +9,7 @@
         "orm"
     ],
     "homepage": "http://www.photon-project.com/",
-    "license": "LGPL-2.1",
+    "license": "LGPL-2.1-or-later",
     "authors": [
         {
             "name": "William MARTIN",
