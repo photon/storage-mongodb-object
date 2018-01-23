@@ -68,6 +68,19 @@ class Object implements \ArrayAccess
     }
 
     /*
+     *  Reload the object from database, and reset pending modifications
+     */
+    public function reload()
+    {
+      $this->__pending = array();
+
+      if ($this->__filter !== null) {
+        $tmp = new static($this->__filter);
+        $this->__data = $tmp->__data;
+      }
+    }
+
+    /*
      *  Return the collection name for this object
      *  Override this method for object with dynamic collection, like data points and vectors
      */

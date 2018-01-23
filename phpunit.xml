@@ -3,10 +3,10 @@
 >
     <testsuites>
         <testsuite name="Micro ORM for MongoDB Tests">
-             <directory>vendor/photon/storage-mongodb-object/tests/</directory>
+             <directory>tests/</directory>
         </testsuite>
     </testsuites>
     <php>
-        <env name="photon.config" value="vendor/photon/storage-mongodb-object/config.test.php"/>
+        <env name="photon.config" value="config.test.php"/>
     </php>
 </phpunit>

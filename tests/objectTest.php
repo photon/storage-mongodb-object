@@ -83,6 +83,17 @@ class ObjectTest extends \photon\test\TestCase
         $this->assertEquals($i, 3);
     }
 
+    public function testReloadObject()
+    {
+        $user = new User;
+        $user->name = 'Foo';
+        $user->save();
+
+        $user->name = 'Bar';
+        $user->reload();
+        $this->assertEquals('Foo', $user->name);
+    }
+
     public function testDoNotExistObject()
     {
         $this->setExpectedException('photon\storage\mongodb\Exception');
