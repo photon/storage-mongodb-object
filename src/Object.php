@@ -14,14 +14,14 @@ class Object implements \ArrayAccess
      *  The collection name to use for this object
      */
     const collectionName = 'null';
-    
+
     /*
      *  List mandatory fields need to be set before a DB commit
      */
     protected $mandatoryFields = array();
-    
+
     protected $__filter;
-    protected $__db;    
+    protected $__db;
     protected $__collection;
     protected $__data;
     protected $__pending;
@@ -74,7 +74,7 @@ class Object implements \ArrayAccess
     static public function getCollectionName()
     {
         return static::collectionName;
-    }    
+    }
 
     protected function initObject()
     {
@@ -96,7 +96,7 @@ class Object implements \ArrayAccess
     {
         // Extends to perform operation just after the DB extraction
     }
-    
+
     protected function preSave()
     {
         // Extends to perform operation just before a save, like update a last modified time field
@@ -229,7 +229,7 @@ class Object implements \ArrayAccess
             return false;
 
         $this->preDelete();
-        
+
         $this->__collection->deleteOne(
             array('_id' => $this->__data['_id'])
         );
@@ -271,7 +271,7 @@ class Object implements \ArrayAccess
     /*
      *  Get the last one object based on the provided sort query
      */
-    static public function lastOne($sort=null)
+    static public function lastOne($sort=null, $query=array())
     {
         if ($sort === null) {
           $sort = array(
@@ -284,7 +284,7 @@ class Object implements \ArrayAccess
         $db = DB::get($db);
         $collection = $db->selectCollection(static::getCollectionName());
 
-        $obj = $collection->findOne(array(), array(
+        $obj = $collection->findOne($query, array(
           'projection' => array('_id' => 1),
           'sort' => $sort,
         ));
@@ -359,4 +359,3 @@ class Object implements \ArrayAccess
         return '[' . get_class($this) . '] : ' . $filter;
     }
 }
-
