@@ -17,13 +17,17 @@ Quick start
 
 1) Add the module in your project
 
+You need to have composer available in your system
+
     composer require "photon/storage-mongodb-object:dev-master"
 
 or for a specific version
 
-    composer require "photon/storage-mongodb-object:2.0.0"
+    composer require "photon/storage-mongodb-object:^3.0"
 
-2) Define a MongoDB connection in your project configuration
+2) Define a database
+
+Define a MongoDB connection in your project configuration
 
     'databases' => array(
         'default' => array(
@@ -36,7 +40,9 @@ or for a specific version
         ),
     ),
 
-3) Create custom object in PHP
+3) Create custom object
+
+For exemple a class to store user informations
 
     class User extends \photon\storage\mongodb\Object
     {
@@ -49,7 +55,9 @@ or for a specific version
         }
     }
 
-4) Use your object
+4) Use it
+
+Use you object in your PHP code
 
     $user = new User;
     $user->name = 'Foo';
