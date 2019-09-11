@@ -1,17 +1,17 @@
 <?php
 
 use photon\db\Connection as DB;
-use photon\storage\mongodb\Object;
+use photon\storage\mongodb\Obj;
 use photon\storage\mongodb\ObjectIterator;
 use photon\storage\mongodb\ObjectVersion;
 use photon\storage\mongodb\Migration;
 
-class ObjA extends Object
+class ObjA extends Obj
 {
     const collectionName = 'ObjA';
 }
 
-class ObjB extends Object
+class ObjB extends Obj
 {
     const collectionName = 'ObjB';
 
@@ -30,7 +30,7 @@ class ObjB extends Object
     }
 }
 
-class ObjC extends Object
+class ObjC extends Obj
 {
     const collectionName = 'ObjC';
 
@@ -90,7 +90,7 @@ class MigrationTest extends \photon\test\TestCase
         $migration->addObject('ObjC');
         $migration->show();
         $migration->check();
-        
+
         $this->setExpectedException('Exception');
         $migration->perform();
     }

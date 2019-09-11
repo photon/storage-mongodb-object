@@ -4,7 +4,7 @@ namespace photon\storage\mongodb;
 use \photon\db\Connection as DB;
 use \photon\config\Container as Conf;
 
-class File extends Object
+class File extends Obj
 {
     /*
      *  The gridfs name to use for this type offile
@@ -19,7 +19,7 @@ class File extends Object
     static public function getCollectionName()
     {
         return static::collectionName . '.files';
-    } 
+    }
 
     public function getId()
     {
@@ -118,4 +118,3 @@ class File extends Object
         return $it->hasNext() === false;
     }
 }
-

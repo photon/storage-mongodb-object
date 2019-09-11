@@ -1,10 +1,10 @@
 <?php
 
 use photon\db\Connection as DB;
-use photon\storage\mongodb\Object;
+use photon\storage\mongodb\Obj;
 use photon\storage\mongodb\ObjectIterator;
 
-class User extends Object
+class User extends Obj
 {
     const collectionName = 'users';
 
@@ -102,13 +102,13 @@ class ObjectTest extends \photon\test\TestCase
 
     public function testObjectID()
     {
-        $id = Object::createObjectID();
+        $id = Obj::createObjectID();
         $this->assertNotEquals($id, null);
     }
 
     public function testObjectIDInvalid()
     {
         $this->setExpectedException('photon\storage\mongodb\Exception');
-        Object::createObjectID('BAD-FORMAT');
+        Obj::createObjectID('BAD-FORMAT');
     }
 }

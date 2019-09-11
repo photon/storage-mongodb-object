@@ -13,7 +13,7 @@ class ObjectIterator extends \IteratorIterator
     private $objectType = null;
     private $collectionName = null;
     private $it = null;
-    
+
     public function __construct($objectType, $filter=array(), $options=array(), $collectionName=null)
     {
         $this->objectType = $objectType;
@@ -32,11 +32,11 @@ class ObjectIterator extends \IteratorIterator
 
         $options['projection'] = array('_id' => 1);
         $this->it = $collection->find($filter, $options);
-        
+
         parent::__construct($this->it);
         $this->rewind();
     }
-    
+
     public function current()
     {
         $current = parent::current();
@@ -52,4 +52,3 @@ class ObjectIterator extends \IteratorIterator
         }
     }
 }
-

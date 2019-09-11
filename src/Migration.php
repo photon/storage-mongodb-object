@@ -22,7 +22,7 @@ class Migration
                 return false;
             }
 
-            if (is_subclass_of($value, 'photon\storage\mongodb\Object') === false) {
+            if (is_subclass_of($value, 'photon\storage\mongodb\Object') === false && is_subclass_of($value, 'photon\storage\mongodb\Obj') === false) {
                 return false;
             }
 
@@ -132,4 +132,3 @@ class Migration
         }
     }
 }
-

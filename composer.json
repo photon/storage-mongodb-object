@@ -23,9 +23,9 @@
     ],
     "require": {
         "php" : "^5.5 || ^7.0",
-        "mongodb/mongodb": "~1.1",
-        "photon/photon": "~2.0",
-        "photon/utils-mongodb": "~2.0"
+        "mongodb/mongodb": "^1.1",
+        "photon/photon": "^2.0",
+        "photon/utils-mongodb": "^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.0"
