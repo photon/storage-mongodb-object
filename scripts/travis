@@ -29,7 +29,7 @@ case "$TRAVIS_PHP_VERSION" in
     printf "yes\nyes\nno\nyes\n" | pecl install pecl_http-2.5.5
     ;;
 
-"7.0" | "7.1")
+"7.0" | "7.1" | "7.2")
     printf "yes\nyes\nno\nyes\n" | C_INCLUDE_PATH=/usr/include/gnutls pecl install pecl_http
     ;;
 
@@ -63,4 +63,3 @@ echo "============ php ini ============"
 php -ini
 echo "============ php exts ============"
 php -r '$exts = get_loaded_extensions(); foreach($exts as $ext){$v=phpversion($ext); echo "$ext = $v\n";}'
-
