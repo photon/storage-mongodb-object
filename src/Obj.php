@@ -261,11 +261,11 @@ class Obj implements \ArrayAccess
         $db = isset($config['databases']) ? $config['databases'] : 'default';
         $db = DB::get($db);
 
-        $collection = $db->selectCollection($this->getCollectionName());
-        $it = $collection->find();
-        $it->limit(1);
+        $collection = $db->selectCollection(static::getCollectionName());
+        $cursor = $collection->find(array(), array('limit' => 1));
+        $it = new \IteratorIterator($cursor);
         $it->rewind();
-        return $it->hasNext() === false;
+        return $it->valid() === false;
     }
 
     /*

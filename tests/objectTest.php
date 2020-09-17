@@ -4,6 +4,12 @@ use photon\db\Connection as DB;
 use photon\storage\mongodb\Obj;
 use photon\storage\mongodb\ObjectIterator;
 
+
+class Map extends Obj
+{
+    const collectionName = 'maps';
+}
+
 class User extends Obj
 {
     const collectionName = 'users';
@@ -110,5 +116,15 @@ class ObjectTest extends \photon\test\TestCase
     {
         $this->setExpectedException('photon\storage\mongodb\Exception');
         Obj::createObjectID('BAD-FORMAT');
+    }
+
+    public function testEmpty()
+    {
+        $this->assertEquals(true, Map::isEmpty());
+
+        $map = new Map;
+        $map->save();
+
+        $this->assertEquals(false, Map::isEmpty());
     }
 }
